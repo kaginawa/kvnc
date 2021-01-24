@@ -5,7 +5,7 @@ kvnc
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kaginawa_kvnc&metric=alert_status)](https://sonarcloud.io/dashboard?id=kaginawa_kvnc)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kaginawa/kvnc)](https://goreportcard.com/report/github.com/kaginawa/kvnc)
 
-[Kaginawa](https://github.com/kaginawa/kaginawa) powered VNC utilities.
+[Kaginawa](https://github.com/kaginawa/kaginawa)-powered VNC connection utilities.
 
 ## Download
 
