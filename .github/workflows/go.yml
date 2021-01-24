@@ -6,21 +6,20 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
     - name: Set up Go 1.14
       uses: actions/setup-go@v1
       with:
         go-version: 1.14
       id: go
-
+    - name: Install xorg-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install xorg-dev
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
-
     - name: Get dependencies
       run: go get -v -t -d ./...
-
     - name: Build client
       run: go build -v ./cmd/kvnc-client
-
     - name: Build agent
       run: go build -v ./cmd/kvnc-agent
