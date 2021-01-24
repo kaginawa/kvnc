@@ -11,9 +11,11 @@ kvnc
 
 See [Releases](https://github.com/kaginawa/kvnc/releases) page.
 
-## Usage
+## Setup
 
 ### Windows
+
+Get the following files and place them in the same folder.
 
 | File | Description | Download page |
 | --- | --- | --- |
@@ -23,17 +25,55 @@ See [Releases](https://github.com/kaginawa/kvnc/releases) page.
 | `vncviewer.exe`   | TightVNC client | [TightVNC](https://www.tightvnc.com/download-old.php) |
 | `WinVNC.exe`      | TightVNC server | [TightVNC](https://www.tightvnc.com/download-old.php) |
 
-Tested TightVNC versions:
+Tested VNC versions:
 
-- 1.3.10
+- TightVNC 1.3.10
 
-#### Client
+## Usage
 
-Run `kvnc-client.exe`.
+### Server
 
-#### Server
+1. (1st time only) Run `WinVNC.exe`.
+2. (1st time only) Right-click the task tray icon and open [Properties...].
 
-`kvnc-agent.exe` for servers.
+    ![winvnc tray](docs/winvnc-tray.png)
+
+3. (1st time only) Input the **Primary password** and **view-only password**.
+
+    ![winvnc password](docs/winvnc-password.png)
+    
+4. (1st time only) Select [Administration] tab, check **Allow loopback connections** and press [OK].
+
+    ![winvnc loopback](docs/winvnc-loopback.png)
+    
+1. Run `kvnc-agent.exe`.
+2. (1st time only) Input server and API key and press [OK].
+   
+    ![kvnc-agent init](docs/kvnc-agent-init.png)
+
+3. Input own custom ID and press [Start].
+
+    ![kvnc-agent](docs/kvnc-agent.png)
+
+4. If "Working" is displayed, the agent is working.
+5. Please tell the client your custom ID and VNC password.
+
+### Client
+
+1. Run `kvnc-client.exe`.
+2. (1st time only) Input server and API key and press [OK].
+
+    ![kvnc-client init](docs/kvnc-client-init.png)
+
+3. Input target custom ID (or MAC address) and press [Connect].
+
+    ![kvnc-client connect](docs/kvnc-client.png)
+
+4. Input password and press [OK].
+
+    ![vnc viewer login](docs/viewer-password.png)
+
+5. Enjoy!
 
 ## License
 

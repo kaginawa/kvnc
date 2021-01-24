@@ -26,7 +26,7 @@ func mainWindow() fyne.Window {
 	trueColor := widget.NewCheck("8bit true color", nil)
 	fullScreen := widget.NewCheck("Full screen", nil)
 	viewOnly := widget.NewCheck("View only", nil)
-	connectButton := widget.NewButton("Connect", func() {})
+	connectButton := widget.NewButton("Connect", nil)
 	tabs := container.NewAppTabs(
 		container.NewTabItem(
 			"Custom ID",
@@ -49,7 +49,8 @@ func mainWindow() fyne.Window {
 		case 1:
 			handleConnectByMAC(connectButton, mac, params)
 		default:
-
+			println("unsupported tab")
+			os.Exit(1)
 		}
 	}
 	w.SetContent(tabs)
@@ -89,7 +90,7 @@ func showConfigDialog() {
 		}
 		config.Server = serverEntry.Text
 		config.APIKey = apiKeyEntry.Text
-		if err := config.Save(*configFilePath); err != nil {
+		if err := config.save(*configFilePath); err != nil {
 			println(err)
 		}
 	}, w)
@@ -185,7 +186,7 @@ func connect(client *kaginawa.Client, report kaginawa.Report, params viewerParam
 		return
 	}
 	config.CustomID = report.CustomID
-	if err := config.Save(*configFilePath); err != nil {
+	if err := config.save(*configFilePath); err != nil {
 		log.Println(err)
 	}
 	listen(tunnel, report.SSHRemotePort, params)

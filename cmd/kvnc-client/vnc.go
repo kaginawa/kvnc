@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/kaginawa/kvnc"
 	"os"
 	"os/exec"
 	"strings"
@@ -36,7 +37,9 @@ func startViewer(port string, params viewerParams) {
 		command += " -viewonly"
 	}
 	tokens := strings.Split(command, " ")
-	res, err := exec.Command(tokens[0], tokens[1:]...).Output()
+	viewer := exec.Command(tokens[0], tokens[1:]...)
+	kvnc.PrepareBackgroundCommand(viewer)
+	res, err := viewer.Output()
 	if err != nil {
 		println(string(res))
 		os.Exit(1)
