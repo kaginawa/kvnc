@@ -23,6 +23,10 @@ See [Releases](https://github.com/kaginawa/kvnc/releases) page.
 | `vncviewer.exe`   | TightVNC client | [TightVNC](https://www.tightvnc.com/download-old.php) |
 | `WinVNC.exe`      | TightVNC server | [TightVNC](https://www.tightvnc.com/download-old.php) |
 
+Tested TightVNC versions:
+
+- 1.3.10
+
 #### Client
 
 Run `kvnc-client.exe`.
@@ -30,14 +34,6 @@ Run `kvnc-client.exe`.
 #### Server
 
 `kvnc-agent.exe` for servers.
-
-### kvnc-client
-
-1. Download TightVNC `vncviewer`
-
-### kvnc-agent
-
-T.B.D.
 
 ## License
 

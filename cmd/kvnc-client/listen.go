@@ -12,7 +12,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func listen(tunnel *kaginawa.SSHServer, port int) {
+func listen(tunnel *kaginawa.SSHServer, port int, params viewerParams) {
 	tunnelConfig, err := createSSHConfig(tunnel.User, tunnel.Key, tunnel.Password)
 	if err != nil {
 		showError(fmt.Errorf("failed to create SSH config: %v", err))
@@ -34,7 +34,7 @@ func listen(tunnel *kaginawa.SSHServer, port int) {
 	addr := listener.Addr().String()
 	localPort := addr[strings.LastIndex(addr, ":")+1:]
 	log.Printf("listening local port %s", localPort)
-	go startViewer(localPort)
+	go startViewer(localPort, params)
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

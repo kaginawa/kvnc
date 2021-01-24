@@ -23,23 +23,31 @@ func mainWindow() fyne.Window {
 	cid := widget.NewEntry()
 	cid.Text = config.CustomID
 	mac := widget.NewEntry()
+	trueColor := widget.NewCheck("8bit true color", nil)
+	fullScreen := widget.NewCheck("Full screen", nil)
+	viewOnly := widget.NewCheck("View only", nil)
 	connectButton := widget.NewButton("Connect", func() {})
 	tabs := container.NewAppTabs(
 		container.NewTabItem(
 			"Custom ID",
-			container.NewVBox(widget.NewLabel("Custom ID:"), cid, connectButton),
+			container.NewVBox(widget.NewLabel("Custom ID:"), cid, trueColor, fullScreen, viewOnly, connectButton),
 		),
 		container.NewTabItem(
 			"MAC Address",
-			container.NewVBox(widget.NewLabel("MAC Address:"), mac, connectButton),
+			container.NewVBox(widget.NewLabel("MAC Address:"), mac, trueColor, fullScreen, viewOnly, connectButton),
 		),
 	)
 	connectButton.OnTapped = func() {
+		params := viewerParams{
+			trueColor:  trueColor.Checked,
+			fullScreen: fullScreen.Checked,
+			viewOnly:   viewOnly.Checked,
+		}
 		switch tabs.CurrentTabIndex() {
 		case 0:
-			handleConnectByCID(connectButton, cid)
+			handleConnectByCID(connectButton, cid, params)
 		case 1:
-			handleConnectByMAC(connectButton, mac)
+			handleConnectByMAC(connectButton, mac, params)
 		default:
 
 		}
@@ -88,7 +96,7 @@ func showConfigDialog() {
 	d.Show()
 }
 
-func handleConnectByMAC(button *widget.Button, mac *widget.Entry) {
+func handleConnectByMAC(button *widget.Button, mac *widget.Entry, params viewerParams) {
 	button.SetText("Connecting...")
 	button.Disable()
 	defer func() {
@@ -109,10 +117,10 @@ func handleConnectByMAC(button *widget.Button, mac *widget.Entry) {
 		showError(errors.New("target not found"))
 		return
 	}
-	connect(client, *report)
+	connect(client, *report, params)
 }
 
-func handleConnectByCID(button *widget.Button, cid *widget.Entry) {
+func handleConnectByCID(button *widget.Button, cid *widget.Entry, params viewerParams) {
 	button.SetText("Connecting...")
 	button.Disable()
 	defer func() {
@@ -134,7 +142,7 @@ func handleConnectByCID(button *widget.Button, cid *widget.Entry) {
 		return
 	}
 	if len(reports) == 1 {
-		connect(client, reports[0])
+		connect(client, reports[0], params)
 	}
 	entries := make([]string, len(reports))
 	for i, r := range reports {
@@ -154,7 +162,7 @@ func handleConnectByCID(button *widget.Button, cid *widget.Entry) {
 		}
 		for i, entry := range entries {
 			if entry == reportSelect.SelectedText() {
-				connect(client, reports[i])
+				connect(client, reports[i], params)
 				return
 			}
 		}
@@ -162,7 +170,7 @@ func handleConnectByCID(button *widget.Button, cid *widget.Entry) {
 	}, w).Show()
 }
 
-func connect(client *kaginawa.Client, report kaginawa.Report) {
+func connect(client *kaginawa.Client, report kaginawa.Report, params viewerParams) {
 	if report.SSHRemotePort == 0 {
 		showError(errors.New("ssh not connected"))
 		return
@@ -180,5 +188,5 @@ func connect(client *kaginawa.Client, report kaginawa.Report) {
 	if err := config.Save(*configFilePath); err != nil {
 		log.Println(err)
 	}
-	listen(tunnel, report.SSHRemotePort)
+	listen(tunnel, report.SSHRemotePort, params)
 }

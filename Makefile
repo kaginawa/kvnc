@@ -29,8 +29,8 @@ run-agent: ## Run agent without build artifact generation
 
 .PHONY: build
 build: ## Build executable binaries for local execution
-	go build -ldflags "-s -w" -o build/kvnc-client ./cmd/kvnc-client
-	go build -ldflags "-s -w" -o build/kvnc-agent ./cmd/kvnc-agent
+	go build -ldflags "-s -w" -o build/ ./cmd/kvnc-client
+	go build -ldflags "-s -w" -o build/ ./cmd/kvnc-agent
 
 .PHONY: build-linux
 build-linux: ## Build linux package
@@ -46,7 +46,7 @@ build-mac: ## Build mac package
 
 .PHONY: build-win
 build-win: ## Build windows package
-	if not exist fyne go get fyne.io/fyne/v2/cmd/fyne
+	if not exist %GOROOT%\bin\fyne.exe go get fyne.io/fyne/v2/cmd/fyne
 	fyne package -os windows -icon icon.png -release -sourceDir ./cmd/kvnc-client -appID $(APP_ID_CLIENT)
 	fyne package -os windows -icon icon.png -release -sourceDir ./cmd/kvnc-agent -appID $(APP_ID_AGENT)
 
