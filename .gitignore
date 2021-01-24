@@ -1,0 +1,8 @@
+.idea
+build
+cmd/kvnc-client/*
+!cmd/kvnc-client/*.go
+cmd/kvnc-agent/*
+!cmd/kvnc-agent/*.go
+vncviewer*
+*.json
