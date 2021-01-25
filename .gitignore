@@ -6,3 +6,4 @@ cmd/kvnc-agent/*
 !cmd/kvnc-agent/*.go
 vncviewer*
 *.json
+*.app
