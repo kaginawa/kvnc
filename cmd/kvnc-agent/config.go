@@ -15,6 +15,7 @@ type kaginawaConfig struct {
 	CustomID      string `json:"custom_id"`
 	SSHLocalPort  int    `json:"ssh_local_port"`
 	UpdateEnabled bool   `json:"update_enabled"`
+	AutoStart     bool   `json:"auto_start"`
 }
 
 // loadConfig loads a kaginawa configuration file from specified path.
