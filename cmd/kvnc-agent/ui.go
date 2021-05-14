@@ -18,15 +18,22 @@ import (
 	"github.com/kaginawa/kvnc"
 )
 
+var (
+	startButton   *widget.Button
+	customIDEntry = widget.NewEntry()
+)
+
 func mainWindow() fyne.Window {
 	a := app.New()
 	w := a.NewWindow("kvnc-agent")
 	w.Resize(fyne.Size{Width: 450, Height: 300})
-	cid := widget.NewEntry()
-	cid.Text = config.CustomID
-	var startButton *widget.Button
-	startButton = widget.NewButton("Start", func() { handleStart(startButton, cid) })
-	w.SetContent(container.NewVBox(widget.NewLabel("Custom ID:"), cid, startButton))
+	customIDEntry.Text = config.CustomID
+	autoStart := widget.NewCheck("Auto start", func(b bool) {
+		config.AutoStart = b
+	})
+	autoStart.SetChecked(config.AutoStart)
+	startButton = widget.NewButton("Start", func() { handleStart() })
+	w.SetContent(container.NewVBox(widget.NewLabel("Custom ID:"), customIDEntry, autoStart, startButton))
 	return w
 }
 
@@ -70,14 +77,14 @@ func showConfigDialog() {
 	d.Show()
 }
 
-func handleStart(button *widget.Button, cid *widget.Entry) {
-	button.SetText("Checking...")
-	button.Disable()
+func handleStart() {
+	startButton.SetText("Checking...")
+	startButton.Disable()
 	defer func() {
-		button.SetText("Start")
-		button.Enable()
+		startButton.SetText("Start")
+		startButton.Enable()
 	}()
-	config.CustomID = cid.Text
+	config.CustomID = customIDEntry.Text
 	if err := config.save(*configFilePath); err != nil {
 		log.Println(err)
 	}
@@ -105,7 +112,7 @@ func handleStart(button *widget.Button, cid *widget.Entry) {
 		showError(fmt.Errorf("failed to start kaginawa: %v", err))
 		return
 	}
-	button.SetText("Working...")
+	startButton.SetText("Working...")
 	scanner := bufio.NewScanner(stdout)
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())

@@ -19,6 +19,8 @@ func main() {
 	w = mainWindow()
 	if err != nil {
 		showConfigDialog()
+	} else if config.AutoStart {
+		go handleStart()
 	}
 	w.ShowAndRun()
 }
